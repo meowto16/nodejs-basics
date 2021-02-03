@@ -1,4 +1,18 @@
-const { user, sayHello } = require('./user')
+const http = require('http')
 
-console.log(user)
-sayHello()
+const server = http.createServer((req, res) => {
+  console.log(req.url)
+
+  res.write(`<h1>Hello from NodeJS</h1>`)
+  res.write(`<h2>Hello from NodeJS</h2>`)
+  res.write(`<h3>Hello from NodeJS</h3>`)
+  res.end(`
+    <div style="background-color: red; width: 200px; height: 200px;">
+        <h1>Test</h1>
+    </div>
+  `)
+})
+
+server.listen(3000, () => {
+  console.log('Server is running...')
+})
