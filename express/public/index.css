@@ -1,3 +1,41 @@
 .nav-wrapper {
     padding: 0 2rem;
 }
+
+.course {
+    height: 100%;
+    margin-bottom: 0;
+}
+
+.course__image {
+    padding: 15px;
+}
+
+.course__image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.course__price {
+    font-size: 2em;
+}
+
+.course-detail {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.course-detail__title {
+    margin-bottom: 2rem;
+}
+
+.course-detail__image {
+    max-width: 300px;
+    height: auto;
+}
+
+.course-detail__price {
+    font-size: 2.5rem;
+}
