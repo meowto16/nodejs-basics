@@ -4,7 +4,7 @@ const app = express()
 
 const hbs = exphbs.create({
   defaultLayout: 'main',
-  extmain: 'hbs'
+  extname: 'hbs'
 })
 
 app.engine('hbs', hbs.engine)
