@@ -1,19 +1,18 @@
 {
-  "name": "nodejs-basics",
+  "name": "node-express",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "private": "true",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
-  "keywords": [
-    "nodejs",
-    "js"
-  ],
-  "author": "Kirshin Maxim <meowto16@gmail.com>",
+  "author": "",
   "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-handlebars": "^5.2.0"
+  },
   "devDependencies": {
     "nodemon": "^2.0.7"
   }

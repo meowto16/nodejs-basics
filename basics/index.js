@@ -10,12 +10,12 @@ const server = http.createServer((req, res) => {
 
     switch (req.url) {
       case '/':
-        return fs.readFile(path.join(__dirname, 'views', 'index.html'), 'utf-8', (err, content) => {
+        return fs.readFile(path.join(__dirname, 'views', 'index.hbs'), 'utf-8', (err, content) => {
           if (err) throw err
           res.end(content)
         })
       case '/about':
-        return fs.readFile(path.join(__dirname, 'views', 'about.html'), 'utf-8', (err, content) => {
+        return fs.readFile(path.join(__dirname, 'views', 'about.hbs'), 'utf-8', (err, content) => {
           if (err) throw err
           res.end(content)
         })
