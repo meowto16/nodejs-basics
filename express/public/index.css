@@ -19,3 +19,23 @@
 .course__price {
     font-size: 2em;
 }
+
+.course-detail {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.course-detail__title {
+    margin-bottom: 2rem;
+}
+
+.course-detail__image {
+    max-width: 300px;
+    height: auto;
+}
+
+.course-detail__price {
+    font-size: 2.5rem;
+}
