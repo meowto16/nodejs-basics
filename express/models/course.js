@@ -26,7 +26,7 @@ class Course {
         JSON.stringify(data),
         (err) => {
           if (err) reject(err)
-          else resolve()
+          else resolve(data)
         }
       )
     })
