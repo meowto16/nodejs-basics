@@ -19,7 +19,7 @@ class Course {
     })
   }
 
-  static async #updateJSONData(data) {
+  static async #updateJSON(data) {
     return new Promise((resolve, reject) => {
       fs.writeFile(
         path.resolve(__dirname, '..', 'data', 'courses.json'),
@@ -36,7 +36,7 @@ class Course {
     const courses = await Course.getAll()
     courses.push(this.toJSON())
 
-    return Course.#updateJSONData(courses)
+    return Course.#updateJSON(courses)
   }
 
   static getAll() {
@@ -58,7 +58,7 @@ class Course {
     const idx = courses.findIndex(c => c.id === course.id)
     courses[idx] = course
 
-    return Course.#updateJSONData(courses)
+    return Course.#updateJSON(courses)
   }
 }
 
