@@ -5,6 +5,7 @@ const app = express()
 const homeRouter = require('./routes/home')
 const addRouter = require('./routes/add')
 const coursesRouter = require('./routes/courses')
+const cardRouter = require('./routes/card')
 
 const hbs = exphbs.create({
   defaultLayout: 'main',
@@ -22,6 +23,7 @@ app.use(express.urlencoded({
 app.use('/', homeRouter)
 app.use('/add', addRouter)
 app.use('/courses', coursesRouter)
+app.use('/card', cardRouter)
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
