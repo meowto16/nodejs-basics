@@ -11,13 +11,21 @@
     padding: 15px;
 }
 
-.course__image img {
-    max-width: 100%;
+.course__image.course__image img {
+    width: auto;
+    max-height: 200px;
     height: auto;
+    margin: 0 auto;
 }
 
 .course__price {
     font-size: 2em;
+}
+
+.course__actions {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
 }
 
 .course-detail {
@@ -38,4 +46,13 @@
 
 .course-detail__price {
     font-size: 2.5rem;
+}
+
+.d-block {
+    display: block;
+}
+
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
 }
