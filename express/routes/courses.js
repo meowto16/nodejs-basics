@@ -3,7 +3,9 @@ const Course = require('../models/course')
 const router = Router()
 
 router.get('/', async (req, res) => {
-  const courses = await Course.find().lean()
+  const courses = await Course.find().populate('user', 'email name').select('price title img').lean()
+  console.log(courses)
+
   res.render('courses', {
     title: 'Курсы',
     isCourses: true,
@@ -37,6 +39,15 @@ router.post('/edit', async (req, res) => {
   await Course.findByIdAndUpdate(req.body.id, courseProps)
 
   res.redirect('/courses')
+})
+
+router.post('/remove', async (req, res) => {
+  try {
+    await Course.deleteOne({ _id: req.body.id })
+    res.redirect('/courses')
+  } catch (e) {
+    console.error(e)
+  }
 })
 
 module.exports = router

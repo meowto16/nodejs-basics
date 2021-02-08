@@ -1,6 +1,6 @@
 <h1>Редактировать {{ course.title }}</h1>
 
-<form action="/courses/edit" method="POST" class="mt-5">
+<form action="/courses/edit" method="POST" class="mt-5 course-form">
     <div class="row">
         <div class="col s12 no-padding">
             <div class="input-field">
@@ -27,5 +27,10 @@
 
     <input type="hidden" name="id" value="{{ course._id }}">
 
-    <button class="btn btn-primary">Изменить курс</button>
+    <button type="submit" class="btn btn-primary">Изменить курс</button>
+</form>
+
+<form action="/courses/remove" method="POST">
+    <input type="hidden" name="id" value="{{ course._id }}">
+    <button type="submit" class="btn red">Удалить курс</button>
 </form>
