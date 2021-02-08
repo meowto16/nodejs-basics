@@ -25,7 +25,15 @@ const userSchema = new Schema({
       },
     ]
   }
-
 })
+
+userSchema.methods.addToCart = async function(course) {
+  const items = [...this.cart.items]
+  const idx = items.findIndex(c => c.course.toString() === course._id.toString())
+  if (idx >= 0) ++items[idx].count
+  else items.push({ course: course._id, count: 1 })
+  this.cart = { items }
+  return this.save()
+}
 
 module.exports = model('User', userSchema)
