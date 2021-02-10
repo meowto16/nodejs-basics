@@ -25,12 +25,12 @@
         </div>
     </div>
 
-    <input type="hidden" name="id" value="{{ course._id }}">
+    <input type="hidden" name="id" value="{{ course.id }}">
 
     <button type="submit" class="btn btn-primary">Изменить курс</button>
 </form>
 
 <form action="/courses/remove" method="POST">
-    <input type="hidden" name="id" value="{{ course._id }}">
+    <input type="hidden" name="id" value="{{ course.id }}">
     <button type="submit" class="btn red">Удалить курс</button>
 </form>
