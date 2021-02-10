@@ -25,6 +25,9 @@
         <p>
             <strong>Цена: <span class="price js-price-format">{{ price }}</span></strong>
         </p>
+        <form action="/orders" method="POST">
+            <button type="submit" class="btn">Сделать заказ</button>
+        </form>
     {{else}}
         <p>Корзина пуста</p>
         <a href="/courses" class="btn btn-primary">Перейти к курсам</a>

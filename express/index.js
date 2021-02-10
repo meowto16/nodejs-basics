@@ -8,7 +8,8 @@ const mongoose = require('mongoose')
 const homeRouter = require('./routes/home')
 const addRouter = require('./routes/add')
 const coursesRouter = require('./routes/courses')
-const cardRouter = require('./routes/cart')
+const cartRouter = require('./routes/cart')
+const ordersRouter = require('./routes/orders')
 const User = require('./models/user')
 
 const hbs = exphbs.create({
@@ -37,7 +38,8 @@ app.use(express.urlencoded({
 app.use('/', homeRouter)
 app.use('/add', addRouter)
 app.use('/courses', coursesRouter)
-app.use('/card', cardRouter)
+app.use('/card', cartRouter)
+app.use('/orders', ordersRouter)
 
 const PORT = process.env.PORT || 3000
 
