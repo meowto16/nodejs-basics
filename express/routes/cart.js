@@ -9,12 +9,21 @@ router.post('/add', async (req, res) => {
 })
 
 router.get('/', async (req, res) => {
-  const card = await Card.fetch()
+  const user = await req.user.populate('cart.items.course').execPopulate()
+  const courses = user.cart.items.map(c => ({
+    ...c.course._doc,
+    count: c.count
+  }))
+
+  const price = courses.reduce((acc, course) => {
+    return acc += (course.price * course.count)
+  }, 0)
+
   res.render('card', {
     title: 'Корзина',
     isCard: true,
-    courses: card.courses,
-    price: card.price,
+    courses,
+    price: price,
   })
 })
 

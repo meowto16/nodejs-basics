@@ -8,7 +8,7 @@ const mongoose = require('mongoose')
 const homeRouter = require('./routes/home')
 const addRouter = require('./routes/add')
 const coursesRouter = require('./routes/courses')
-const cardRouter = require('./routes/card')
+const cardRouter = require('./routes/cart')
 const User = require('./models/user')
 
 const hbs = exphbs.create({
@@ -22,8 +22,7 @@ app.set('views', 'views')
 
 app.use(async (req, res, next) => {
   try {
-    const user = await User.findById(process.env.APP_USER_DEFAULT_ID)
-    req.user = user
+    req.user = await User.findById(process.env.APP_USER_DEFAULT_ID)
     next()
   } catch (e) {
     console.error(e)
