@@ -2,6 +2,19 @@ const { Router } = require('express')
 const router = Router()
 const Course = require('../models/course')
 
+function mapCartItems(cart) {
+  return cart.items.map(c => ({
+    ...c.course._doc,
+    count: c.count
+  }))
+}
+
+function computePrice(courses) {
+  return courses.reduce((acc, course) => {
+    return acc += (course.price * course.count)
+  }, 0)
+}
+
 router.post('/add', async (req, res) => {
   const course = await Course.findById(req.body.id).lean()
   await req.user.addToCart(course)
@@ -10,14 +23,8 @@ router.post('/add', async (req, res) => {
 
 router.get('/', async (req, res) => {
   const user = await req.user.populate('cart.items.course').execPopulate()
-  const courses = user.cart.items.map(c => ({
-    ...c.course._doc,
-    count: c.count
-  }))
-
-  const price = courses.reduce((acc, course) => {
-    return acc += (course.price * course.count)
-  }, 0)
+  const courses = mapCartItems(user.cart)
+  const price = computePrice(courses)
 
   res.render('card', {
     title: 'Корзина',
@@ -28,8 +35,15 @@ router.get('/', async (req, res) => {
 })
 
 router.delete('/remove/:id', async (req, res) => {
-  const card = await Card.remove(req.params.id)
-  return res.status(200).json(card)
+  await req.user.removeFromCart(req.params.id)
+  const user = await req.user.populate('cart.items.course').execPopulate()
+
+  const courses = mapCartItems(user.cart)
+  const cart = {
+    courses, price: computePrice(courses)
+  }
+
+  return res.status(200).json(cart)
 })
 
 module.exports = router
