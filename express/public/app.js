@@ -1,10 +1,12 @@
 window.addEventListener('load', priceFormat)
+window.addEventListener('load', dateFormat)
 
 const renderEvent = new CustomEvent('render')
 
 const $card = document.querySelector('#card')
 if ($card) {
   window.addEventListener('render', priceFormat)
+  window.addEventListener('render', dateFormat)
   $card.addEventListener('click', event => {
     if (event.target.classList.contains('js-remove')) {
       const id = event.target.dataset.id
@@ -58,5 +60,18 @@ function priceFormat() {
       currency: 'rub',
       style: 'currency'
     }).format(node.textContent)
+  })
+}
+
+function dateFormat() {
+  document.querySelectorAll('.js-date-format').forEach(node => {
+    node.textContent = new Intl.DateTimeFormat('ru-RU', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    }).format(new Date(date))
   })
 }
