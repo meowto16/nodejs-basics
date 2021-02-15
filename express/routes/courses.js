@@ -25,7 +25,7 @@ router.get('/:id/edit', async (req, res) => {
     return res.redirect('/')
   }
 
-  const course = await Course.findById(req.params.id).lean()
+  const course = await Course.findById(req.params.id)
 
   res.render('course-edit', {
     title: `Редактировать "${course.title}"`,
