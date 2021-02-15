@@ -1,0 +1,70 @@
+<div class="auth">
+    <div class="row">
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s6">
+                    <a class="active" href="#login">Войти</a>
+                </li>
+                <li class="tab col s6">
+                    <a href="#register">Регистрация</a>
+                </li>
+            </ul>
+        </div>
+        <div id="login" class="col s6 offset-s3">
+            <h2 class="center-align">Вход</h2>
+            <form action="/auth/login" method="POST">
+                <div class="row">
+                    <div class="col s12">
+                        <div class="input-field">
+                            <input name="email" type="email" placeholder="login@mail.ru" id="email" class="validate"
+                                   required>
+                            <label for="email">E-Mail</label>
+                            <span class="helper-text" data-error="Введите E-Mail"></span>
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div class="input-field">
+                            <input name="password" type="password" placeholder="******" id="password" class="validate"
+                                   required>
+                            <label for="password">Пароль</label>
+                            <span class="helper-text" data-error="Введите пароль"></span>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">Войти</button>
+            </form>
+        </div>
+        <div id="register" class="col s6 offset-s3">
+            <h2 class="center-align">Регистрация</h2>
+            <form action="/auth/register" method="POST">
+                <div class="row">
+                    <div class="col s12">
+                        <div class="input-field">
+                            <input name="remail" type="email" placeholder="login@mail.ru" id="remail" class="validate"
+                                   required>
+                            <label for="remail">E-Mail</label>
+                            <span class="helper-text" data-error="Введите E-Mail"></span>
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div class="input-field">
+                            <input name="rpassword" type="password" placeholder="******" id="rpassword" class="validate"
+                                   required>
+                            <label for="rpassword">Пароль</label>
+                            <span class="helper-text" data-error="Введите пароль"></span>
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div class="input-field">
+                            <input name="confirm" type="password" placeholder="******" id="confirm" class="validate"
+                                   required>
+                            <label for="confirm">Подтвердите пароль</label>
+                            <span class="helper-text" data-error="Введите пароль"></span>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+</div>

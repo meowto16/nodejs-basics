@@ -4,6 +4,7 @@ const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-acce
 const path = require('path')
 const express = require('express')
 const exphbs = require('express-handlebars')
+const session = require('express-session')
 const app = express()
 const mongoose = require('mongoose')
 
@@ -12,7 +13,9 @@ const addRouter = require('./routes/add')
 const coursesRouter = require('./routes/courses')
 const cartRouter = require('./routes/cart')
 const ordersRouter = require('./routes/orders')
-const User = require('./models/user')
+const authRouter = require('./routes/auth')
+
+const varMiddleware = require('./middleware/variables')
 
 const hbs = exphbs.create({
   defaultLayout: 'main',
@@ -28,25 +31,23 @@ app.engine('hbs', hbs.engine)
 app.set('view engine', 'hbs')
 app.set('views', 'views')
 
-app.use(async (req, res, next) => {
-  try {
-    req.user = await User.findById(process.env.APP_USER_DEFAULT_ID)
-    next()
-  } catch (e) {
-    console.error(e)
-  }
-
-})
-
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({
   extended: true
 }))
+app.use(session({
+  secret: 'some secret value',
+  resave: false,
+  saveUninitialized: false
+}))
+app.use(varMiddleware)
+
 app.use('/', homeRouter)
 app.use('/add', addRouter)
 app.use('/courses', coursesRouter)
 app.use('/card', cartRouter)
 app.use('/orders', ordersRouter)
+app.use('/auth', authRouter)
 
 const PORT = process.env.PORT || 3000
 
@@ -59,15 +60,6 @@ async function start() {
       useFindAndModify: true,
       useUnifiedTopology: true,
     })
-    const candidate = await User.findOne()
-    if (!candidate) {
-      const user = new User({
-        email: 'meowto16@gmail.com',
-        name: 'Maxim',
-        cart: { items: [] }
-      })
-      await user.save()
-    }
 
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}...`)

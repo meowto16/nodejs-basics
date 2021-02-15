@@ -75,3 +75,5 @@ function dateFormat() {
     }).format(new Date(node.textContent))
   })
 }
+
+M.Tabs.init(document.querySelectorAll('.tabs'))
