@@ -17,9 +17,9 @@ function computePrice(courses) {
 }
 
 router.post('/add', async (req, res) => {
-  const course = await Course.findById(req.body.id).lean()
+  const course = await Course.findById(req.body.id)
   await req.user.addToCart(course)
-  res.redirect('/card')
+  res.redirect('/cart')
 })
 
 router.get('/', async (req, res) => {
@@ -27,9 +27,9 @@ router.get('/', async (req, res) => {
   const courses = mapCartItems(user.cart)
   const price = computePrice(courses)
 
-  res.render('card', {
+  res.render('cart', {
     title: 'Корзина',
-    isCard: true,
+    isCart: true,
     courses,
     price: price,
   })
