@@ -14,7 +14,6 @@ const coursesRouter = require('./routes/courses')
 const cartRouter = require('./routes/cart')
 const ordersRouter = require('./routes/orders')
 const authRouter = require('./routes/auth')
-const User = require('./models/user')
 
 const varMiddleware = require('./middleware/variables')
 
@@ -31,16 +30,6 @@ const hbs = exphbs.create({
 app.engine('hbs', hbs.engine)
 app.set('view engine', 'hbs')
 app.set('views', 'views')
-
-app.use(async (req, res, next) => {
-  try {
-    req.user = await User.findById(process.env.APP_USER_DEFAULT_ID)
-    next()
-  } catch (e) {
-    console.error(e)
-  }
-
-})
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({
@@ -71,15 +60,6 @@ async function start() {
       useFindAndModify: true,
       useUnifiedTopology: true,
     })
-    const candidate = await User.findOne()
-    if (!candidate) {
-      const user = new User({
-        email: 'meowto16@gmail.com',
-        name: 'Maxim',
-        cart: { items: [] }
-      })
-      await user.save()
-    }
 
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}...`)
