@@ -4,6 +4,7 @@ const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-acce
 const path = require('path')
 const express = require('express')
 const exphbs = require('express-handlebars')
+const session = require('express-session')
 const app = express()
 const mongoose = require('mongoose')
 
@@ -14,6 +15,8 @@ const cartRouter = require('./routes/cart')
 const ordersRouter = require('./routes/orders')
 const authRouter = require('./routes/auth')
 const User = require('./models/user')
+
+const varMiddleware = require('./middleware/variables')
 
 const hbs = exphbs.create({
   defaultLayout: 'main',
@@ -43,6 +46,13 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({
   extended: true
 }))
+app.use(session({
+  secret: 'some secret value',
+  resave: false,
+  saveUninitialized: false
+}))
+app.use(varMiddleware)
+
 app.use('/', homeRouter)
 app.use('/add', addRouter)
 app.use('/courses', coursesRouter)
