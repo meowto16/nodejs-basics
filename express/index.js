@@ -1,4 +1,6 @@
 require('dotenv').config()
+const Handlebars = require('handlebars')
+const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
 const path = require('path')
 const express = require('express')
 const exphbs = require('express-handlebars')
@@ -16,6 +18,7 @@ const hbs = exphbs.create({
   defaultLayout: 'main',
   extname: 'hbs',
   loggerLevel: 0,
+  handlebars: allowInsecurePrototypeAccess(Handlebars),
   helpers: {
     json: (object) => JSON.stringify(object)
   }
