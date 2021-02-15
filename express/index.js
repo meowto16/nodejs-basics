@@ -16,6 +16,7 @@ const ordersRouter = require('./routes/orders')
 const authRouter = require('./routes/auth')
 
 const varMiddleware = require('./middleware/variables')
+const userMiddleware = require('./middleware/user')
 
 const app = express()
 const hbs = exphbs.create({
@@ -47,6 +48,7 @@ app.use(session({
   saveUninitialized: false,
 }))
 app.use(varMiddleware)
+app.use(userMiddleware)
 
 app.use('/', homeRouter)
 app.use('/add', addRouter)
