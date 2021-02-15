@@ -15,12 +15,16 @@
                 <div class="card-action">
                     <div class="course__actions">
                         <a class="course__action" target="_blank" href="/courses/{{ id }}">Открыть курс</a>
+                        {{#if @root.isAuth}}
                         <a class="course__action" href="/courses/{{ id }}/edit?allow=true">Редактировать</a>
+                        {{/if}}
                     </div>
-                    <form action="/card/add" method="POST">
+                    {{#if @root.isAuth}}
+                    <form action="/cart/add" method="POST">
                         <input type="hidden" name="id" value="{{ id }}">
                         <button class="mx-auto d-block course__action btn btn-primary">Добавить в корзину</button>
                     </form>
+                    {{/if}}
                 </div>
             </div>
         </div>

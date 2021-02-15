@@ -5,8 +5,8 @@ const path = require('path')
 const express = require('express')
 const exphbs = require('express-handlebars')
 const session = require('express-session')
-const app = express()
 const mongoose = require('mongoose')
+const MongoStore = require('connect-mongodb-session')(session)
 
 const homeRouter = require('./routes/home')
 const addRouter = require('./routes/add')
@@ -16,7 +16,9 @@ const ordersRouter = require('./routes/orders')
 const authRouter = require('./routes/auth')
 
 const varMiddleware = require('./middleware/variables')
+const userMiddleware = require('./middleware/user')
 
+const app = express()
 const hbs = exphbs.create({
   defaultLayout: 'main',
   extname: 'hbs',
@@ -25,6 +27,10 @@ const hbs = exphbs.create({
   helpers: {
     json: (object) => JSON.stringify(object)
   }
+})
+const store = new MongoStore({
+  collection: 'sessions',
+  uri: process.env.APP_MONGO_DB_URL
 })
 
 app.engine('hbs', hbs.engine)
@@ -36,16 +42,18 @@ app.use(express.urlencoded({
   extended: true
 }))
 app.use(session({
+  store,
   secret: 'some secret value',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
 }))
 app.use(varMiddleware)
+app.use(userMiddleware)
 
 app.use('/', homeRouter)
 app.use('/add', addRouter)
 app.use('/courses', coursesRouter)
-app.use('/card', cartRouter)
+app.use('/cart', cartRouter)
 app.use('/orders', ordersRouter)
 app.use('/auth', authRouter)
 

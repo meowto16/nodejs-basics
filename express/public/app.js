@@ -3,20 +3,20 @@ window.addEventListener('load', dateFormat)
 
 const renderEvent = new CustomEvent('render')
 
-const $card = document.querySelector('#card')
-if ($card) {
+const $cart = document.querySelector('#cart')
+if ($cart) {
   window.addEventListener('render', priceFormat)
   window.addEventListener('render', dateFormat)
-  $card.addEventListener('click', event => {
+  $cart.addEventListener('click', event => {
     if (event.target.classList.contains('js-remove')) {
       const id = event.target.dataset.id
 
-      fetch(`/card/remove/${id}`, {
+      fetch(`/cart/remove/${id}`, {
         method: 'delete'
       }).then(res => res.json())
-        .then(card => {
-          if (card.courses.length) {
-            const rows = card.courses.map(({title, count, id}) => {
+        .then(cart => {
+          if (cart.courses.length) {
+            const rows = cart.courses.map(({title, count, id}) => {
               return `
                 <tr>
                     <td>${title}</td>
@@ -27,7 +27,7 @@ if ($card) {
                 </tr>
               `
             })
-            $card.innerHTML = `
+            $cart.innerHTML = `
               <table>
                   <thead>
                       <tr>
@@ -45,7 +45,7 @@ if ($card) {
               </p>
             `
           } else {
-            $card.innerHTML = `<p>Корзина пуста!</p>`
+            $cart.innerHTML = `<p>Корзина пуста!</p>`
           }
           window.dispatchEvent(renderEvent)
         })
