@@ -1,6 +1,7 @@
 const { Router } = require('express')
-const router = Router()
+const bcrypt = require('bcryptjs')
 const User = require('./../models/user')
+const router = Router()
 
 router.get('/login', async (req, res) => {
   res.render('auth/login', {
@@ -15,7 +16,7 @@ router.post('/login', async (req, res) => {
     const [candidate] = await User.find({ email })
     if (!candidate) return res.redirect('/auth/login#login')
     else {
-      const areSame = password === candidate.password
+      const areSame = await bcrypt.compare(password, candidate.password)
       if (!areSame) return res.redirect('/auth/login#login')
       else {
         req.session.user = candidate
@@ -44,7 +45,8 @@ router.post('/register', async (req, res) => {
 
     if (candidate) return res.redirect('/auth/login#register')
     else {
-      const user = new User({ email, name, password, cart: { items: [] } })
+      const hashPassword = await bcrypt.hash(password, 10)
+      const user = new User({ email, name, password: hashPassword, cart: { items: [] } })
       await user.save()
       res.redirect('/auth/login#login')
     }
