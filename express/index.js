@@ -20,6 +20,8 @@ const authRouter = require('./routes/auth')
 const varMiddleware = require('./middleware/variables')
 const userMiddleware = require('./middleware/user')
 
+const keys = require('./keys/index')
+
 const app = express()
 const hbs = exphbs.create({
   defaultLayout: 'main',
@@ -32,7 +34,7 @@ const hbs = exphbs.create({
 })
 const store = new MongoStore({
   collection: 'sessions',
-  uri: process.env.APP_MONGO_DB_URL
+  uri: keys.MONGO_DB.URL
 })
 
 app.engine('hbs', hbs.engine)
@@ -61,13 +63,13 @@ app.use('/cart', cartRouter)
 app.use('/orders', ordersRouter)
 app.use('/auth', authRouter)
 
-const PORT = process.env.APP_PORT || 3000
+const PORT = keys.PORT || 3000
 
 start()
 
 async function start() {
   try {
-    await mongoose.connect(process.env.APP_MONGO_DB_URL, {
+    await mongoose.connect(keys.MONGO_DB.URL, {
       useNewUrlParser: true,
       useFindAndModify: true,
       useUnifiedTopology: true,
