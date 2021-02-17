@@ -6,7 +6,11 @@ const router = Router()
 router.get('/login', async (req, res) => {
   res.render('auth/login', {
     title: 'Авторизация',
-    isLogin: true
+    isLogin: true,
+    error: {
+      login: req.flash('loginError'),
+      register: req.flash('registerError')
+    }
   })
 })
 
@@ -14,10 +18,16 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body
     const [candidate] = await User.find({ email })
-    if (!candidate) return res.redirect('/auth/login#login')
+    if (!candidate) {
+      req.flash('loginError', 'Пользователь не найден')
+      return res.redirect('/auth/login#login')
+    }
     else {
       const areSame = await bcrypt.compare(password, candidate.password)
-      if (!areSame) return res.redirect('/auth/login#login')
+      if (!areSame) {
+        req.flash('loginError', 'Пользователь не найден')
+        return res.redirect('/auth/login#login')
+      }
       else {
         req.session.user = candidate
         req.session.isAuthenticated = true
@@ -40,10 +50,13 @@ router.get('/logout', async (req, res) => {
 
 router.post('/register', async (req, res) => {
   try {
-    const { email, password, repeat, name } = req.body
+    const { email, password, name } = req.body
     const candidate = await User.findOne({ email })
 
-    if (candidate) return res.redirect('/auth/login#register')
+    if (candidate) {
+      req.flash('registerError', 'Пользователь с таким E-Mail уже существует.')
+      return res.redirect('/auth/login#register')
+    }
     else {
       const hashPassword = await bcrypt.hash(password, 10)
       const user = new User({ email, name, password: hashPassword, cart: { items: [] } })
