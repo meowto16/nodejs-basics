@@ -4,5 +4,8 @@ module.exports = {
     URL: process.env.APP_MONGO_DB_URL,
     USER: process.env.APP_MONGO_DB_USER,
     PASS: process.env.APP_MONGO_DB_PASS,
+  },
+  SENDGRID: {
+    KEY: process.env.APP_SENDGRID_KEY
   }
 }
