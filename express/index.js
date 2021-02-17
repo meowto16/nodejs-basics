@@ -1,5 +1,7 @@
 require('dotenv').config()
 const Handlebars = require('handlebars')
+const csrf = require('csurf')
+const flash = require('connect-flash')
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
 const path = require('path')
 const express = require('express')
@@ -47,6 +49,8 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
 }))
+app.use(csrf())
+app.use(flash())
 app.use(varMiddleware)
 app.use(userMiddleware)
 
@@ -57,7 +61,7 @@ app.use('/cart', cartRouter)
 app.use('/orders', ordersRouter)
 app.use('/auth', authRouter)
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.APP_PORT || 3000
 
 start()
 
