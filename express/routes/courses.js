@@ -3,22 +3,37 @@ const Course = require('../models/course')
 const router = Router()
 const auth = require('../middleware/auth')
 
-router.get('/', async (req, res) => {
-  const courses = await Course.find().populate('user', 'email name').select('price title img')
+function isOwner(course, req) {
+  return course.user.toString() === req.user._id.toString()
+}
 
-  res.render('courses', {
-    title: 'Курсы',
-    isCourses: true,
-    courses,
-  })
+router.get('/', async (req, res) => {
+  try {
+    const courses = await Course.find()
+      .select('price title img')
+      .populate('user', 'id email name')
+
+    res.render('courses', {
+      title: 'Курсы',
+      userId: req.user ? req.user._id.toString() : null,
+      isCourses: true,
+      courses,
+    })
+  } catch (e) {
+    console.error(e)
+  }
 })
 
 router.get('/:id', async (req, res) => {
-  const course = await Course.findById(req.params.id).lean()
-  res.render('course', {
-    layout: 'empty',
-    ...course,
-  })
+  try {
+    const course = await Course.findById(req.params.id).lean()
+    res.render('course', {
+      layout: 'empty',
+      ...course,
+    })
+  } catch (e) {
+    console.error(e)
+  }
 })
 
 router.get('/:id/edit', auth, async (req, res) => {
@@ -26,24 +41,43 @@ router.get('/:id/edit', auth, async (req, res) => {
     return res.redirect('/')
   }
 
-  const course = await Course.findById(req.params.id)
+  try {
+    const course = await Course.findById(req.params.id)
+    if (!isOwner(course, req)) {
+      return res.redirect('/courses')
+    }
 
-  res.render('course-edit', {
-    title: `Редактировать "${course.title}"`,
-    course,
-  })
+    res.render('course-edit', {
+      title: `Редактировать "${course.title}"`,
+      course,
+    })
+  } catch (e) {
+    console.error(e)
+  }
 })
 
 router.post('/edit', auth, async (req, res) => {
-  const { id, ...courseProps } = req.body
-  await Course.findByIdAndUpdate(req.body.id, courseProps)
+  try {
+    const { id, ...courseProps } = req.body
+    const course = await Course.findById(id)
+    if (!isOwner(course, req)) {
+      return res.redirect('/courses')
+    }
+    Object.assign(course, courseProps)
+    await course.save()
 
-  res.redirect('/courses')
+    res.redirect('/courses')
+  } catch (e) {
+    console.error(e)
+  }
 })
 
 router.post('/remove', auth, async (req, res) => {
   try {
-    await Course.deleteOne({ _id: req.body.id })
+    await Course.deleteOne({
+      _id: req.body.id,
+      user: req.user._id
+    })
     res.redirect('/courses')
   } catch (e) {
     console.error(e)

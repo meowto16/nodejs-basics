@@ -28,9 +28,7 @@ const hbs = exphbs.create({
   extname: 'hbs',
   loggerLevel: 0,
   handlebars: allowInsecurePrototypeAccess(Handlebars),
-  helpers: {
-    json: (object) => JSON.stringify(object)
-  }
+  helpers: require('./utils/hbs-helpers')
 })
 const store = new MongoStore({
   collection: 'sessions',

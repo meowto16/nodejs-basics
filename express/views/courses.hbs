@@ -16,7 +16,9 @@
                     <div class="course__actions">
                         <a class="course__action" target="_blank" href="/courses/{{ id }}">Открыть курс</a>
                         {{#if @root.isAuth}}
-                        <a class="course__action" href="/courses/{{ id }}/edit?allow=true">Редактировать</a>
+                            {{#ifeq user._id @root.userId}}
+                                <a class="course__action" href="/courses/{{ id }}/edit?allow=true">Редактировать</a>
+                            {{/ifeq}}
                         {{/if}}
                     </div>
                     {{#if @root.isAuth}}
