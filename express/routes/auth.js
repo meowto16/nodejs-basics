@@ -132,7 +132,7 @@ router.get('/password/:resetToken', async (req, res) => {
         title: 'Восстановить доступ',
         error: req.flash('error'),
         userId: user._id.toString(),
-        token: req.params.token
+        token: req.params.resetToken
       })
       : res.redirect('/auth/login')
   } catch (e) {
