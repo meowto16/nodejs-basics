@@ -119,4 +119,25 @@ router.post('/reset', (req, res) => {
   }
 })
 
+router.get('/password/:resetToken', async (req, res) => {
+  try {
+    const user = req.params.resetToken && await User.findOne({
+      resetToken: req.params.resetToken,
+      resetTokenExp: {
+        $gt: Date.now() // Greater than
+      }
+    })
+    return user
+      ? res.render('/auth/password', {
+        title: 'Восстановить доступ',
+        error: req.flash('error'),
+        userId: user._id.toString(),
+        token: req.params.token
+      })
+      : res.redirect('/auth/login')
+  } catch (e) {
+    console.error(e)
+  }
+})
+
 module.exports = router
