@@ -16,9 +16,12 @@ const coursesRouter = require('./routes/courses')
 const cartRouter = require('./routes/cart')
 const ordersRouter = require('./routes/orders')
 const authRouter = require('./routes/auth')
+const profileRouter = require('./routes/profile')
 
 const varMiddleware = require('./middleware/variables')
 const userMiddleware = require('./middleware/user')
+const errorHandler = require('./middleware/error')
+const fileMiddleware = require('./middleware/file')
 
 const keys = require('./keys/index')
 
@@ -40,6 +43,7 @@ app.set('view engine', 'hbs')
 app.set('views', 'views')
 
 app.use(express.static(path.join(__dirname, 'public')))
+app.use('/upload', express.static(path.join(__dirname, 'upload')))
 app.use(express.urlencoded({
   extended: true
 }))
@@ -49,6 +53,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
 }))
+app.use(fileMiddleware.single('avatar'))
 app.use(csrf())
 app.use(flash())
 app.use(varMiddleware)
@@ -60,6 +65,9 @@ app.use('/courses', coursesRouter)
 app.use('/cart', cartRouter)
 app.use('/orders', ordersRouter)
 app.use('/auth', authRouter)
+app.use('/profile', profileRouter)
+
+app.use(errorHandler)
 
 const PORT = keys.PORT || 3000
 

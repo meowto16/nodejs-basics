@@ -1,7 +1,10 @@
 const { Router } = require('express')
+const { validationResult } = require('express-validator')
+
 const Course = require('../models/course')
 const router = Router()
 const auth = require('../middleware/auth')
+const { courseValidators } = require('../utils/validators')
 
 function isOwner(course, req) {
   return course.user.toString() === req.user._id.toString()
@@ -56,9 +59,15 @@ router.get('/:id/edit', auth, async (req, res) => {
   }
 })
 
-router.post('/edit', auth, async (req, res) => {
+router.post('/edit', auth, courseValidators, async (req, res) => {
+  const { id, ...courseProps } = req.body
+
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).redirect(`/courses/${id}/edit?allow=true`)
+  }
+
   try {
-    const { id, ...courseProps } = req.body
     const course = await Course.findById(id)
     if (!isOwner(course, req)) {
       return res.redirect('/courses')
