@@ -5,6 +5,7 @@
             <li {{#if isHome}}class="active"{{/if}}><a href="/">Главная</a></li>
             <li {{#if isCourses}}class="active"{{/if}}><a href="/courses">Курсы</a></li>
             {{#if isAuth }}<li {{#if isAdd}}class="active"{{/if}} ><a href="/add">Добавить курс</a></li>{{/if}}
+            {{#if isAuth }}<li {{#if isProfile}}class="active"{{/if}} ><a href="/profile">Профиль</a></li>{{/if}}
             {{#if isAuth }}<li {{#if isCart}}class="active"{{/if}} ><a href="/cart">Корзина</a></li>{{/if}}
             {{#if isAuth }}<li {{#if isOrder}}class="active"{{/if}} ><a href="/orders">Заказы</a></li>{{/if}}
             {{#if isAuth }}
