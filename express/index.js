@@ -19,6 +19,7 @@ const authRouter = require('./routes/auth')
 
 const varMiddleware = require('./middleware/variables')
 const userMiddleware = require('./middleware/user')
+const errorHandler = require('./middleware/error')
 
 const keys = require('./keys/index')
 
@@ -60,6 +61,8 @@ app.use('/courses', coursesRouter)
 app.use('/cart', cartRouter)
 app.use('/orders', ordersRouter)
 app.use('/auth', authRouter)
+
+app.use(errorHandler)
 
 const PORT = keys.PORT || 3000
 
