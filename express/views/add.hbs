@@ -1,24 +1,26 @@
 <h1>{{ title }}</h1>
-
+{{#if error }}
+    <p class="alert">{{ error }}</p>
+{{/if}}
 <form action="/add" method="POST" class="mt-5">
     <div class="row">
         <div class="col s12 no-padding">
             <div class="input-field">
-                <input name="title" type="text" placeholder="Название курса" id="title" class="validate" required>
+                <input name="title" type="text" placeholder="Название курса" id="title" class="validate" value="{{ data.title }}" required>
                 <label for="title">Название курса</label>
                 <span class="helper-text" data-error="Введите название"></span>
             </div>
         </div>
         <div class="col s12 no-padding">
             <div class="input-field">
-                <input name="price" type="number" placeholder="Цена курса" id="price" class="validate" required min="1">
+                <input name="price" type="number" placeholder="Цена курса" id="price" value="{{ data.price }}" class="validate" required min="1">
                 <label for="price">Цена курса</label>
                 <span class="helper-text" data-error="Введите цену"></span>
             </div>
         </div>
         <div class="col s12 no-padding">
             <div class="input-field">
-                <input name="img" type="text" placeholder="URL Картинки" id="img" class="validate" required>
+                <input name="img" type="text" placeholder="URL Картинки" id="img" value="{{ data.img }}" class="validate" required>
                 <label for="img">URL картинки</label>
                 <span class="helper-text" data-error="Введите URL картинки"></span>
             </div>
